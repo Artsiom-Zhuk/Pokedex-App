@@ -2,11 +2,11 @@ import React from 'react';
 import './style.scss';
 
 interface HelloProps {
-    name: string
+  name: string;
 }
 
 const Hello: React.FunctionComponent<HelloProps> = ({ name }) => (
-    <div className="example-class">{ `Hello, ${name}` }</div>
+  <div className="example-class">{ `Hello, ${name}` }</div>
 );
 
 export default Hello;
