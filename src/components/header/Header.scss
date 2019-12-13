@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    justify-content: flex-end;
+    background-color: rgb(19, 70, 128);
+    width: 100%;
+    height: 50px;
+
+    &__btn-container {
+        display: flex;
+        align-items: center;
+    }
+
+    &__link {
+        text-decoration: none;
+        color: white;
+        font-size: 20px;
+
+        &:last-child {
+            margin:0 20px;
+        }
+    }
+}
