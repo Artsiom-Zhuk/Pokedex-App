@@ -9,7 +9,7 @@ import Header from './header/Header';
 import './App.scss';
 
 export default class App extends PureComponent {
-  render(): any {
+  render(): JSX.Element {
     return (
       <Router>
         <div>
