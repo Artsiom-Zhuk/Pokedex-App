@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from 'react';
 
 import InputSearch from '../../components/input-search/InputSearch';
+import PokemonCard from '../../components/pokemon-card/PokemonCard';
 
 const MainPage: React.FunctionComponent = () => {
   const handleChange = (e: SyntheticEvent): void => {
@@ -14,6 +15,10 @@ const MainPage: React.FunctionComponent = () => {
       <InputSearch
         placeholder="Search Pokemon"
         handleChange={handleChange}
+      />
+      <PokemonCard
+        name="Pikachu"
+        url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/25.png"
       />
     </>
   );
