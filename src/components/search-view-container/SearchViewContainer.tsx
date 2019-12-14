@@ -19,7 +19,7 @@ export class SearchViewContainer extends Component<{}> {
   };
 
   render() {
-    const arr = ['Pokemon1', 'Pokemon2', 'Pokemon3', 'Pokemon4', 'Pokemon5', 'Pokemon6', 'Pokemon7', 'Pokemon8'];
+    const arr = ['Pokemon1', 'Pokemon2', 'Pokemon3', 'Pokemon4', 'Pokemon5', 'Pokemon6', 'Pokemon7', 'Pokemon8', 'gghh12$3'];
     return (
       <div className="search-view-container">
         <div className="search-view-container__search-input">
@@ -29,10 +29,11 @@ export class SearchViewContainer extends Component<{}> {
         </div>
         <div className="search-view-container__view-cards">
           {
-            arr.map((name: string): any => {
-              if (name.indexOf(this.state.currentValue) !== -1) {
+            arr.map((name: string, index: number): any => {
+              if (name.toLowerCase().indexOf(this.state.currentValue.toLowerCase()) !== -1) {
                 return (
                   <PokemonCard
+                    key={index}
                     url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/25.png"
                     name={name}
                   />

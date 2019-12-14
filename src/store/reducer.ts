@@ -14,6 +14,13 @@ export const reducer = (state: any = initialState, action: any): any => {
       };
     }
 
+    case actionTypes.FETCH_ALL_POKEMONS: {
+      return {
+       ...state,
+       allPokemons: action.arrPokemons
+      };
+    }
+
     default: {
       return state;
     }
