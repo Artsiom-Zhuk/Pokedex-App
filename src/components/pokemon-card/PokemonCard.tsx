@@ -1,26 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import './PokemonCard.scss';
+import { render } from 'react-dom';
 
 interface PokemonCardProps {
   name?: string;
-  url?: string;
+  infoUrl?: string;
 }
 
-const PokemonCard: React.FunctionComponent<PokemonCardProps> = ({ name, url }) => (
-  <div className="pokemon-card">
-    <div
-      className="pokemon-card__img-container"
-      style={{ backgroundImage: `url(${url})` }}
-    >
-      <div>
-        <a href="/" className="pokemon-card__btn-add-remove">+</a>
+class PokemonCard extends Component<PokemonCardProps> {
+
+  state = {
+    imageUrl: ''
+  }
+
+  async componentDidMount() {
+    const response = await fetch(`${this.props.infoUrl}`);
+    const data = await response.json();
+    this.setState({
+      imageUrl: data.sprites.front_default
+    });
+  }
+
+  render() {
+    return (
+      <div className="pokemon-card">
+        <div
+          className="pokemon-card__img-container"
+          style={{ backgroundImage: `url(${this.state.imageUrl})` }}
+        >
+          <div>
+            <a href="/" className="pokemon-card__btn-add-remove">+</a>
+          </div>
+        </div>
+        <div className="pokemon-card__name-container">
+          {this.props.name}
+        </div>
       </div>
-    </div>
-    <div className="pokemon-card__name-container">
-      {name}
-    </div>
-  </div>
-);
+    )
+  }
+
+};
 
 export default PokemonCard;

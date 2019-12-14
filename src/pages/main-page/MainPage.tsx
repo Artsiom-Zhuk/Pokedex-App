@@ -19,7 +19,9 @@ class MainPage extends Component<MainPageProps> {
 
   render() {
     return (
-      <SearchViewContainer />
+      <SearchViewContainer 
+        pokemons={this.props.allPokemons}
+      />
     );
   }
 };
