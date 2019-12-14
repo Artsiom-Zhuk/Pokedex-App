@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { addPokemon, removePokemon } from '../../store/actions';
 
 import './PokemonCard.scss';
-import { render } from 'react-dom';
 
 interface PokemonCardProps {
   name?: string;
   infoUrl?: string;
+  symbol?: string;
+  favorite?: any;
+  dispatch?: any;
 }
 
 class PokemonCard extends Component<PokemonCardProps> {
 
   state = {
-    imageUrl: ''
+    imageUrl: '',
+  }
+
+  addRemoveFavorite = (infoUrl: string, e: any) => {
+    e.preventDefault();
+    if (this.props.favorite.includes(infoUrl)) {
+      this.props.dispatch(removePokemon(infoUrl));
+    } else {
+      this.props.dispatch(addPokemon(infoUrl));
+    }
+
+    console.log(infoUrl);
   }
 
   async componentDidMount() {
@@ -30,7 +46,9 @@ class PokemonCard extends Component<PokemonCardProps> {
           style={{ backgroundImage: `url(${this.state.imageUrl})` }}
         >
           <div>
-            <a href="/" className="pokemon-card__btn-add-remove">+</a>
+            <a href="/" className="pokemon-card__btn-add-remove" onClick={this.addRemoveFavorite.bind(this, this.props.infoUrl)}>
+              {this.props.symbol}
+            </a>
           </div>
         </div>
         <div className="pokemon-card__name-container">
@@ -39,7 +57,10 @@ class PokemonCard extends Component<PokemonCardProps> {
       </div>
     )
   }
-
 };
 
-export default PokemonCard;
+const mapStateToProps = (state: any) => ({
+  favorite: state.favorite
+});
+
+export default connect(mapStateToProps)(PokemonCard);

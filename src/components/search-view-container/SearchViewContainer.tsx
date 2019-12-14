@@ -1,4 +1,5 @@
 import React, { Component, SyntheticEvent } from 'react';
+import { connect } from 'react-redux';
 
 import InputSearch from '../../components/input-search/InputSearch';
 import PokemonCard from '../../components/pokemon-card/PokemonCard';
@@ -6,7 +7,8 @@ import PokemonCard from '../../components/pokemon-card/PokemonCard';
 import './SearchViewContainer.scss'
 
 interface SearchViewContainerProps {
-  pokemons: any
+  pokemons: any;
+  favorite: any;
 }
 
 export class SearchViewContainer extends Component<SearchViewContainerProps> {
@@ -64,6 +66,7 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
                     key={index}
                     name={obj.name}
                     infoUrl={obj.url}
+                    symbol={this.props.favorite.includes(obj.url) ? '-' : '+'}
                   />
                 )
               }
@@ -73,7 +76,10 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
       </div>
     )
   }
-
 }
 
-export default SearchViewContainer;
+const mapStateToProps = (state: any) => ({
+  favorite: state.favorite
+});
+
+export default connect(mapStateToProps)(SearchViewContainer);
