@@ -19,12 +19,13 @@ class PokemonCard extends Component<PokemonCardProps> {
     imageUrl: '',
   }
 
-  addRemoveFavorite = (infoUrl: string, e: any) => {
+  addRemoveFavorite = (infoUrl: string, name: string, e: any) => {
     e.preventDefault();
-    if (this.props.favorite.includes(infoUrl)) {
+    const a = this.props.favorite.some((o:any) => o.url === infoUrl);
+    if (a) {
       this.props.dispatch(removePokemon(infoUrl));
     } else {
-      this.props.dispatch(addPokemon(infoUrl));
+      this.props.dispatch(addPokemon(infoUrl, name));
     }
 
     console.log(infoUrl);
@@ -46,7 +47,7 @@ class PokemonCard extends Component<PokemonCardProps> {
           style={{ backgroundImage: `url(${this.state.imageUrl})` }}
         >
           <div>
-            <a href="/" className="pokemon-card__btn-add-remove" onClick={this.addRemoveFavorite.bind(this, this.props.infoUrl)}>
+            <a href="/" className="pokemon-card__btn-add-remove" onClick={this.addRemoveFavorite.bind(this, this.props.infoUrl, this.props.name)}>
               {this.props.symbol}
             </a>
           </div>

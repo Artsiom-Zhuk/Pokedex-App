@@ -11,17 +11,22 @@ export const reducer = (state: any = initialState, action: any): any => {
   switch (action.type) {
     case actionTypes.ADD_POKEMON: {
 
-      const favoritePokemons = JSON.stringify([...state.favorite, action.url]);
+      const favoritePokemons = JSON.stringify([...state.favorite, {url: action.url, name: action.name}]);
       window.localStorage.setItem('favoritePokemons', favoritePokemons);
 
       return {
         ...state,
-        favorite: [...state.favorite, action.url],
+        favorite: [...state.favorite, {url: action.url, name: action.name}],
       };
     }
 
     case actionTypes.REMOVE_POKEMON: {
-      const pos = state.favorite.indexOf(action.url);
+      let pos = null;
+      state.favorite.map((o: any, index: any) => {
+        if (o.url === action.url) {
+          pos = index;
+        }
+      })
       state.favorite.splice(pos, 1);
 
       const favoritePokemons = JSON.stringify([...state.favorite]);

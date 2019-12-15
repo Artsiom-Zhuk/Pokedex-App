@@ -9,6 +9,7 @@ import './SearchViewContainer.scss'
 interface SearchViewContainerProps {
   pokemons: any;
   favorite: any;
+  isFavorite?: any;
 }
 
 export class SearchViewContainer extends Component<SearchViewContainerProps> {
@@ -66,7 +67,12 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
                     key={index}
                     name={obj.name}
                     infoUrl={obj.url}
-                    symbol={this.props.favorite.includes(obj.url) ? '-' : '+'}
+                    symbol={this.props.isFavorite 
+                      ? '-' 
+                      : this.props.favorite.some((o:any) => o.url === obj.url) 
+                        ? '-' 
+                        : '+'
+                    }
                   />
                 )
               }
