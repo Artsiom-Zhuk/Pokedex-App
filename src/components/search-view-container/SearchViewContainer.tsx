@@ -69,6 +69,7 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
         <div className="search-view-container__search-input">
           <InputSearch
             handleChange={this.handleChange}
+            placeholder={'Search Pokemon'}
           />
         </div>
         <div className="search-view-container__view-cards">
