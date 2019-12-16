@@ -1,8 +1,9 @@
 import React, { SyntheticEvent } from 'react';
+
 import './InputSearch.scss';
 
 interface InputSearchProps {
-  handleChange?(e: SyntheticEvent): void;
+  handleChange(e: SyntheticEvent): void;
   placeholder?: string;
 }
 

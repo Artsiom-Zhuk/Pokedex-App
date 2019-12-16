@@ -1,23 +1,25 @@
 .search-view-container {
     border: 2px dotted black;
-    margin: 20px auto 0;
+    margin: 40px auto 0;
     width: 900px;
     height: 600px;
-    overflow: auto;
+    overflow-y: scroll;
 
         &__search-input {
+            position: sticky;
+            top: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 60px;
-            background-color: black;
+            background-color: rgb(52, 61, 112);
         }
 
         &__view-cards {
             display: flex;
-            padding: 20px;
             flex-wrap: wrap;
             justify-content: space-around;
+            padding: 20px;
         }
 }

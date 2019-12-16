@@ -108,7 +108,7 @@ class CertainPokemonPage extends Component<MatchProps> {
         </div>
         }
         {tab === 'moves' && <div className="certain-pokemon-page__container-list-moves">
-          <h3>Moves</h3>
+          <h3 className="certain-pokemon-page__title-list-moves">Moves</h3>
           <ul className="certain-pokemon-page__list-moves">
             {moves.map((move: string, index: number) => (
               <li key={index}>{move}</li>

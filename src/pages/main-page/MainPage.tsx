@@ -6,8 +6,13 @@ import SearchViewContainer from '../../components/search-view-container/SearchVi
 import { fetchAllPokemons } from '../../store/actions'
 
 interface MainPageProps {
-  allPokemons: any,
+  allPokemons: Pokemon[],
   dispatch: any
+}
+
+interface Pokemon {
+  name: string;
+  url: string;
 }
 
 class MainPage extends Component<MainPageProps> {
@@ -18,9 +23,11 @@ class MainPage extends Component<MainPageProps> {
   }
 
   render() {
+    const { allPokemons } = this.props;
+
     return (
       <SearchViewContainer 
-        pokemons={this.props.allPokemons}
+        pokemons={allPokemons}
       />
     );
   }

@@ -1,13 +1,27 @@
 import { actionTypes } from './actions';
 
-const favoritePokemonsFromLocalStorage = window.localStorage.getItem('favoritePokemons');
+import getItemFromLocalStorage from '../utils/getItemFromLocalStorage';
+
+const favoritePokemonsFromLocalStorage = getItemFromLocalStorage('favoritePokemons');
+
+interface Pokemon {
+  name: string;
+  url: string;
+}
+
+interface State {
+  allPokemons: Pokemon[];
+  favorite: Pokemon[];
+}
 
 export const initialState = {
   allPokemons: [],
-  favorite: favoritePokemonsFromLocalStorage ? JSON.parse(favoritePokemonsFromLocalStorage) : []
+  favorite: favoritePokemonsFromLocalStorage 
+    ? JSON.parse(favoritePokemonsFromLocalStorage)
+    : []
 };
 
-export const reducer = (state: any = initialState, action: any): any => {
+export const reducer = (state: State = initialState, action: any): any => {
   switch (action.type) {
     case actionTypes.ADD_POKEMON: {
 
@@ -21,13 +35,11 @@ export const reducer = (state: any = initialState, action: any): any => {
     }
 
     case actionTypes.REMOVE_POKEMON: {
-      let pos = null;
-      state.favorite.map((o: any, index: any) => {
-        if (o.url === action.url) {
-          pos = index;
+      state.favorite.map((favoritePokemon: Pokemon, index: number) => {
+        if (favoritePokemon.url === action.url) {
+          state.favorite.splice(index, 1);
         }
       })
-      state.favorite.splice(pos, 1);
 
       const favoritePokemons = JSON.stringify([...state.favorite]);
       window.localStorage.setItem('favoritePokemons', favoritePokemons);
