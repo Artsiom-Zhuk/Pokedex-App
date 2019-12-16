@@ -4,12 +4,16 @@ import { connect } from 'react-redux';
 import InputSearch from '../../components/input-search/InputSearch';
 import PokemonCard from '../../components/pokemon-card/PokemonCard';
 
+import { removeAllFavoritePokemons } from '../../store/actions';
+
 import './SearchViewContainer.scss'
 
 interface SearchViewContainerProps {
   pokemons: Pokemon[];
   favorite: Pokemon[];
   isFavoritePage?: boolean;
+  dispatch: any;
+
 }
 
 interface Pokemon {
@@ -49,14 +53,19 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
   changeScroll = (e: any) => {
     /**
      toBottom - how many pixels are left until the end of the scroll
-     */ 
-    const { queryParamOffset} = this.state;
+     */
+    const { queryParamOffset } = this.state;
     const toBottom = e.target.scrollHeight - (e.target.scrollTop + e.target.clientHeight);
     if (toBottom < 10) {
       this.setState({
         queryParamOffset: queryParamOffset + 20
       })
     }
+  }
+
+  removeAllFavoritePokemons = () => {
+    const { dispatch } = this.props;
+    dispatch(removeAllFavoritePokemons())
   }
 
   render() {
@@ -71,6 +80,9 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
             handleChange={this.handleChange}
             placeholder={'Search Pokemon'}
           />
+          {isFavoritePage && <button className="search-view-container__remove-all-btn" onClick={this.removeAllFavoritePokemons}>
+            Clear All
+          </button>}
         </div>
         <div className="search-view-container__view-cards">
           {

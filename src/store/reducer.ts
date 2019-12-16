@@ -57,6 +57,14 @@ export const reducer = (state: State = initialState, action: any): any => {
       };
     }
 
+    case actionTypes.REMOVE_ALL_FAVORITE_POKEMONS: {
+      window.localStorage.setItem('favoritePokemons', JSON.stringify([]));
+      return {
+       ...state,
+       favorite: []
+      };
+    }
+
     default: {
       return state;
     }
