@@ -7,39 +7,28 @@ import PokemonCard from '../../components/pokemon-card/PokemonCard';
 import './SearchViewContainer.scss'
 
 interface SearchViewContainerProps {
-  pokemons: any;
-  favorite: any;
-  isFavorite?: any;
+  pokemons: Pokemon[];
+  favorite: Pokemon[];
+  isFavoritePage?: boolean;
+}
+
+interface Pokemon {
+  name: string;
+  url: string;
+}
+
+interface MapStateToProps {
+  favorite: Pokemon[];
 }
 
 export class SearchViewContainer extends Component<SearchViewContainerProps> {
 
   state = {
     currentValue: '',
-    queryOffset: 20
+    queryParamOffset: 20
   }
 
   ref = React.createRef<HTMLDivElement>();
-
-  handleChange = (e: SyntheticEvent): void => {
-    const element = e.currentTarget as HTMLInputElement;
-    this.setState({
-      currentValue: element.value
-    });
-  };
-
-  changeScroll = (e: any) => {
-    /**
-     toBottom - how many pixels are left until the end of the scroll
-     */
-    const toBottom = e.target.scrollHeight - (e.target.scrollTop + e.target.clientHeight);
-    console.log(Math.floor(toBottom));
-    if (toBottom < 10){
-      this.setState({
-        queryOffset: this.state.queryOffset + 20
-      })
-    }
-  }
 
   componentDidMount() {
     this.ref.current && this.ref.current.addEventListener('scroll', this.changeScroll);
@@ -49,10 +38,34 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
     this.ref.current && this.ref.current.removeEventListener('scroll', this.changeScroll);
   }
 
+  handleChange = (e: SyntheticEvent) => {
+    const element = e.currentTarget as HTMLInputElement;
+    const value = element.value;
+    this.setState({
+      currentValue: value
+    });
+  };
+
+  changeScroll = (e: any) => {
+    /**
+     toBottom - how many pixels are left until the end of the scroll
+     */ 
+    const { queryParamOffset} = this.state;
+    const toBottom = e.target.scrollHeight - (e.target.scrollTop + e.target.clientHeight);
+    if (toBottom < 10) {
+      this.setState({
+        queryParamOffset: queryParamOffset + 20
+      })
+    }
+  }
+
   render() {
-    const pokemons = this.props.pokemons.slice(0, this.state.queryOffset);
+    const { pokemons, isFavoritePage, favorite } = this.props;
+    const { queryParamOffset, currentValue } = this.state;
+    const chunkPokemons = pokemons.slice(0, queryParamOffset);
+
     return (
-      <div className="search-view-container"  ref={this.ref}>
+      <div className="search-view-container" ref={this.ref}>
         <div className="search-view-container__search-input">
           <InputSearch
             handleChange={this.handleChange}
@@ -60,17 +73,17 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
         </div>
         <div className="search-view-container__view-cards">
           {
-            pokemons.map((obj: any, index: number): any => {
-              if (obj.name.toLowerCase().indexOf(this.state.currentValue.toLowerCase()) !== -1) {
+            chunkPokemons.map((pokemon: Pokemon, index: number): JSX.Element | void => {
+              if (pokemon.name.toLowerCase().indexOf(currentValue.toLowerCase()) !== -1) {
                 return (
                   <PokemonCard
                     key={index}
-                    name={obj.name}
-                    infoUrl={obj.url}
-                    symbol={this.props.isFavorite 
-                      ? '-' 
-                      : this.props.favorite.some((o:any) => o.url === obj.url) 
-                        ? '-' 
+                    name={pokemon.name}
+                    infoUrl={pokemon.url}
+                    symbol={isFavoritePage
+                      ? '-'
+                      : favorite.some((favoritePokemon: Pokemon) => favoritePokemon.url === pokemon.url)
+                        ? '-'
                         : '+'
                     }
                   />
@@ -84,7 +97,7 @@ export class SearchViewContainer extends Component<SearchViewContainerProps> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: MapStateToProps) => ({
   favorite: state.favorite
 });
 

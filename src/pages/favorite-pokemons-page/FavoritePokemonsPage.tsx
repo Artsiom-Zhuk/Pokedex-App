@@ -5,29 +5,34 @@ import { connect } from 'react-redux';
 import SearchViewContainer from '../../components/search-view-container/SearchViewContainer';
 
 interface FavoritePokemonsPageProps {
-  allPokemons: any,
-  dispatch: any,
-  favorite: any
+  allPokemons: Pokemon[];
+  favorite: Pokemon[];
+}
+
+interface Pokemon {
+  name: string;
+  url: string;
+}
+
+interface MapStateToProps {
+  allPokemons: Pokemon[];
+  favorite: Pokemon[];
 }
 
 class FavoritePokemonsPage extends Component<FavoritePokemonsPageProps> {
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-
-  }
-
   render() {
+    const {favorite} = this.props;
+
     return (
       <SearchViewContainer 
-        pokemons={this.props.favorite}
-        isFavorite={true}
+        pokemons={favorite}
+        isFavoritePage={true}
       />
     );
   }
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: MapStateToProps) => ({
   allPokemons: state.allPokemons,
   favorite: state.favorite
 });
