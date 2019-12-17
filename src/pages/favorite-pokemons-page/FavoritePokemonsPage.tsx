@@ -1,40 +1,27 @@
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import SearchViewContainer from '../../components/search-view-container/SearchViewContainer';
 
-interface FavoritePokemonsPageProps {
-  allPokemons: Pokemon[];
-  favorite: Pokemon[];
-}
+import { FavoritePokemonsPageProps, MapStateToProps } from './types';
 
-interface Pokemon {
-  name: string;
-  url: string;
-}
-
-interface MapStateToProps {
-  allPokemons: Pokemon[];
-  favorite: Pokemon[];
-}
-
-class FavoritePokemonsPage extends Component<FavoritePokemonsPageProps> {
-  render() {
-    const {favorite} = this.props;
+class FavoritePokemonsPage extends PureComponent<FavoritePokemonsPageProps> {
+  render(): JSX.Element {
+    const { favorite } = this.props;
 
     return (
-      <SearchViewContainer 
+      <SearchViewContainer
         pokemons={favorite}
-        isFavoritePage={true}
+        isFavoritePage
       />
     );
   }
-};
+}
 
-const mapStateToProps = (state: MapStateToProps) => ({
+const mapStateToProps = (state: MapStateToProps): MapStateToProps => ({
   allPokemons: state.allPokemons,
-  favorite: state.favorite
+  favorite: state.favorite,
 });
 
 export default connect(mapStateToProps)(FavoritePokemonsPage);

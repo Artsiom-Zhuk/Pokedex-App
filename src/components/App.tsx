@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { HashRouter as Router, Route } from 'react-router-dom';
 
 import CertainPokemonPage from '../pages/certain-pokemon-page/CertainPokemonPage';
@@ -8,7 +8,7 @@ import Header from './header/Header';
 
 import './App.scss';
 
-export default class App extends Component {
+export default class App extends PureComponent {
   render(): JSX.Element {
     return (
       <Router>

@@ -3,38 +3,29 @@ import { connect } from 'react-redux';
 
 import SearchViewContainer from '../../components/search-view-container/SearchViewContainer';
 
-import { fetchAllPokemons } from '../../store/actions'
+import { fetchAllPokemons } from '../../store/actions';
 
-interface MainPageProps {
-  allPokemons: Pokemon[],
-  dispatch: any
-}
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
+import { MainPageProps, MapStateToProps } from './types';
 
 class MainPage extends Component<MainPageProps> {
-
-  componentDidMount() {
+  componentDidMount(): void {
     const { dispatch } = this.props;
     dispatch(fetchAllPokemons());
   }
 
-  render() {
+  render(): JSX.Element {
     const { allPokemons } = this.props;
 
     return (
-      <SearchViewContainer 
+      <SearchViewContainer
         pokemons={allPokemons}
       />
     );
   }
-};
+}
 
-const mapStateToProps = (state: any) => ({
-  allPokemons: state.allPokemons
+const mapStateToProps = (state: MapStateToProps): MapStateToProps => ({
+  allPokemons: state.allPokemons,
 });
 
 export default connect(mapStateToProps)(MainPage);

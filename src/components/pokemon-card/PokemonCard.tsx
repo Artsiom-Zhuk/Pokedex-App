@@ -1,35 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component, SyntheticEvent } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { addPokemon, removePokemon } from '../../store/actions';
+import { PokemonCardProps, MapStateToProps, Pokemon } from './types';
 
 import './PokemonCard.scss';
 
-interface PokemonCardProps {
-  name: string;
-  infoUrl: string;
-  symbol: string;
-  favorite: Pokemon[];
-  dispatch: any;
-}
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
-
-interface MapStateToProps {
-  favorite: Pokemon[];
-}
-
 class PokemonCard extends Component<PokemonCardProps & RouteComponentProps> {
-
   state = {
     imageUrl: '',
   }
 
-  addRemoveFavorite = (infoUrl: string, name: string, e: any) => {
+  async componentDidMount(): Promise<void> {
+    const { infoUrl } = this.props;
+    const responsePokemonData = await fetch(`${infoUrl}`);
+    const pokemonData = await responsePokemonData.json();
+    this.setState({
+      imageUrl: pokemonData.sprites.front_default,
+    });
+  }
+
+  addRemoveFavorite = (infoUrl: string, name: string, e: SyntheticEvent): void => {
     e.preventDefault();
     const { favorite, dispatch } = this.props;
     const isFavoritePokemon = favorite.some((favoritePokemon: Pokemon) => favoritePokemon.url === infoUrl);
@@ -40,16 +32,7 @@ class PokemonCard extends Component<PokemonCardProps & RouteComponentProps> {
     }
   }
 
-  async componentDidMount() {
-    const { infoUrl } = this.props;
-    const responsePokemonData = await fetch(`${infoUrl}`);
-    const pokemonData = await responsePokemonData.json();
-    this.setState({
-      imageUrl: pokemonData.sprites.front_default
-    });
-  }
-
-  render() {
+  render(): JSX.Element {
     const { name, infoUrl, symbol } = this.props;
     const { imageUrl } = this.state;
 
@@ -61,7 +44,11 @@ class PokemonCard extends Component<PokemonCardProps & RouteComponentProps> {
             style={{ backgroundImage: `url(${imageUrl})` }}
           >
             <div>
-              <button className="pokemon-card__btn-add-remove" onClick={this.addRemoveFavorite.bind(this, infoUrl, name)}>
+              <button
+                className="pokemon-card__btn-add-remove"
+                onClick={this.addRemoveFavorite.bind(this, infoUrl, name)}
+                type="button"
+              >
                 {symbol}
               </button>
             </div>
@@ -71,12 +58,12 @@ class PokemonCard extends Component<PokemonCardProps & RouteComponentProps> {
           </div>
         </div>
       </Link>
-    )
+    );
   }
-};
+}
 
-const mapStateToProps = (state: MapStateToProps) => ({
-  favorite: state.favorite
+const mapStateToProps = (state: MapStateToProps): MapStateToProps => ({
+  favorite: state.favorite,
 });
 
 export default withRouter(connect(mapStateToProps)(PokemonCard));

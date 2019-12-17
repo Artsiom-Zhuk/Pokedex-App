@@ -1,48 +1,44 @@
-import { actionTypes } from './actions';
-
+import { actionTypes, ActionsTypes } from './actions';
+import { Pokemon } from '../types/types';
 import getItemFromLocalStorage from '../utils/getItemFromLocalStorage';
+import setItemInLocalStorage from '../utils/setItemInLocalStorage';
 
 const favoritePokemonsFromLocalStorage = getItemFromLocalStorage('favoritePokemons');
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
 
 interface State {
   allPokemons: Pokemon[];
   favorite: Pokemon[];
 }
 
-export const initialState = {
+export const initialState: State = {
   allPokemons: [],
-  favorite: favoritePokemonsFromLocalStorage 
+  favorite: favoritePokemonsFromLocalStorage
     ? JSON.parse(favoritePokemonsFromLocalStorage)
-    : []
+    : [],
 };
 
-export const reducer = (state: State = initialState, action: any): any => {
+export const reducer = (state: State = initialState, action: ActionsTypes): State => {
   switch (action.type) {
     case actionTypes.ADD_POKEMON: {
-
-      const favoritePokemons = JSON.stringify([...state.favorite, {url: action.url, name: action.name}]);
-      window.localStorage.setItem('favoritePokemons', favoritePokemons);
+      const favoritePokemons = JSON.stringify([...state.favorite, { url: action.url, name: action.name }]);
+      setItemInLocalStorage('favoritePokemons', favoritePokemons);
 
       return {
         ...state,
-        favorite: [...state.favorite, {url: action.url, name: action.name}],
+        favorite: [...state.favorite, { url: action.url, name: action.name }],
       };
     }
 
     case actionTypes.REMOVE_POKEMON: {
-      state.favorite.map((favoritePokemon: Pokemon, index: number) => {
+      state.favorite.map((favoritePokemon: Pokemon, index: number): null => {
         if (favoritePokemon.url === action.url) {
           state.favorite.splice(index, 1);
         }
-      })
+        return null;
+      });
 
       const favoritePokemons = JSON.stringify([...state.favorite]);
-      window.localStorage.setItem('favoritePokemons', favoritePokemons);
+      setItemInLocalStorage('favoritePokemons', favoritePokemons);
 
       return {
         ...state,
@@ -52,16 +48,16 @@ export const reducer = (state: State = initialState, action: any): any => {
 
     case actionTypes.FETCH_ALL_POKEMONS: {
       return {
-       ...state,
-       allPokemons: action.arrPokemons
+        ...state,
+        allPokemons: action.arrPokemons,
       };
     }
 
     case actionTypes.REMOVE_ALL_FAVORITE_POKEMONS: {
-      window.localStorage.setItem('favoritePokemons', JSON.stringify([]));
+      setItemInLocalStorage('favoritePokemons', JSON.stringify([]));
       return {
-       ...state,
-       favorite: []
+        ...state,
+        favorite: [],
       };
     }
 
@@ -69,4 +65,4 @@ export const reducer = (state: State = initialState, action: any): any => {
       return state;
     }
   }
-}
+};

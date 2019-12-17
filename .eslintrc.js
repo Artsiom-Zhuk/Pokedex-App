@@ -20,6 +20,12 @@ module.exports = {
 		'@typescript-eslint/indent': [2, 2],
 		"react/prop-types": "off",
 		"@typescript-eslint/no-explicit-any": 0,
+		"max-len": ["error", { "code": 140 }],
+		"react/state-in-constructor": "off",
+		"no-nested-ternary": "off",
+		"react/no-array-index-key": "off",
+		"jsx-a11y/no-static-element-interactions": "off",
+		"jsx-a11y/click-events-have-key-events": "off",
 		"import/extensions": [
 			"error",
 			"ignorePackages",
