@@ -31,8 +31,14 @@ class SearchViewContainer extends Component<SearchViewContainerProps> {
   handleChange = (e: SyntheticEvent): void => {
     const element = e.currentTarget as HTMLInputElement;
     const { value } = element;
+
+    if (this.ref.current) {
+      this.ref.current.scrollTo(0, 0);
+    }
+
     this.setState({
       currentValue: value,
+      queryParamOffset: 20,
     });
   };
 
@@ -58,7 +64,8 @@ class SearchViewContainer extends Component<SearchViewContainerProps> {
   render(): JSX.Element {
     const { pokemons, isFavoritePage, favorite } = this.props;
     const { queryParamOffset, currentValue } = this.state;
-    const chunkPokemons = pokemons.slice(0, queryParamOffset);
+    const clonePokemons = pokemons.filter((pokemon: Pokemon) => pokemon.name.toLowerCase().indexOf(currentValue.toLowerCase()) !== -1);
+    const chunkPokemons = clonePokemons.slice(0, queryParamOffset);
 
     return (
       <div className="search-view-container" ref={this.ref}>
@@ -79,22 +86,19 @@ class SearchViewContainer extends Component<SearchViewContainerProps> {
         </div>
         <div className="search-view-container__view-cards">
           {
-            chunkPokemons.map((pokemon: Pokemon): JSX.Element | null => {
-              if (pokemon.name.toLowerCase().indexOf(currentValue.toLowerCase()) !== -1) {
-                return (
-                  <PokemonCard
-                    key={pokemon.name}
-                    name={pokemon.name}
-                    infoUrl={pokemon.url}
-                    symbol={isFavoritePage
+            chunkPokemons.map((pokemon: Pokemon): JSX.Element => {
+              return (
+                <PokemonCard
+                  key={pokemon.name}
+                  name={pokemon.name}
+                  infoUrl={pokemon.url}
+                  symbol={isFavoritePage
+                    ? '-'
+                    : favorite.some((favoritePokemon: Pokemon) => favoritePokemon.url === pokemon.url)
                       ? '-'
-                      : favorite.some((favoritePokemon: Pokemon) => favoritePokemon.url === pokemon.url)
-                        ? '-'
-                        : '+'}
-                  />
-                );
-              }
-              return null;
+                      : '+'}
+                />
+              );
             })
           }
         </div>
