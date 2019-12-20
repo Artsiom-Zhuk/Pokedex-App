@@ -80,26 +80,24 @@ class SearchViewContainer extends Component<SearchViewContainerProps> {
               onClick={this.removeAllFavoritePokemons}
               type="button"
             >
-            Clear All
+              Clear All
             </button>
           )}
         </div>
         <div className="search-view-container__view-cards">
           {
-            chunkPokemons.map((pokemon: Pokemon): JSX.Element => {
-              return (
-                <PokemonCard
-                  key={pokemon.name}
-                  name={pokemon.name}
-                  infoUrl={pokemon.url}
-                  symbol={isFavoritePage
+            chunkPokemons.map((pokemon: Pokemon): JSX.Element => (
+              <PokemonCard
+                key={pokemon.name}
+                name={pokemon.name}
+                infoUrl={pokemon.url}
+                symbol={isFavoritePage
+                  ? '-'
+                  : favorite.some((favoritePokemon: Pokemon) => favoritePokemon.url === pokemon.url)
                     ? '-'
-                    : favorite.some((favoritePokemon: Pokemon) => favoritePokemon.url === pokemon.url)
-                      ? '-'
-                      : '+'}
-                />
-              );
-            })
+                    : '+'}
+              />
+            ))
           }
         </div>
       </div>
