@@ -8,7 +8,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './index.html'));
 });
 
-const port = 1234;
+const port = 8282;
 
 app.listen(port, () => {
   console.log(`Running Express on port - ${port}`);
