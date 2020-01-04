@@ -16,7 +16,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './index.html'));
 });
 
-const port = 8282;
+const port = 8080;
 
 app.listen(port, () => {
   console.log(`Running Express on port - ${port}`);
