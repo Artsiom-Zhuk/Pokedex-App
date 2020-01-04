@@ -10,6 +10,13 @@ app.get('*', (req, res) => {
 
 const port = 8282;
 
+app.get('*/info', (req, res) => {
+  res.status(200).send('ok');
+});
+app.get('*/health', (req, res) => {
+  res.status(200).send('ok');
+});
+
 app.listen(port, () => {
   console.log(`Running Express on port - ${port}`);
 });
